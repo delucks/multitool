@@ -27,6 +27,7 @@ func ShellLogger(args []string, stdin io.Reader) error {
 		"err":       Red,
 		"error":     Red,
 		"exception": Red,
+		"fatal":     Red,
 		"warn":      Yellow,
 		"warning":   Yellow,
 		"ok":        Green,

@@ -26,6 +26,7 @@ func Help([]string, io.Reader) error {
 
 func main() {
 	Entrypoints = map[string]Tool{
+		"basejump":   Tool{"Convert an integer between base representations", ConvertBase},
 		"log":        Tool{"Simple logger for use in shell scripts", ShellLogger},
 		"suggest-fc": Tool{"Spell-correct an incorrectly typed executable", SpellCorrectCommand},
 		"help":       Tool{"Display this help output", Help},

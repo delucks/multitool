@@ -8,7 +8,7 @@ import (
 
 func ConvertBase(args []string, _ io.Reader) error {
 	if len(args) != 3 {
-		return fmt.Errorf("<basejump> requires two arguments, the input number and base to convert to")
+		return fmt.Errorf("basejump: two arguments are required\n  basejump <input integer> <output base>\n  basejump 0xfeedface 10\n  basejump 258 2\n  basejump 0b1001011 10\n  basejump 0o23815 2")
 	}
 	// Parse the output base
 	output_base, err := strconv.ParseUint(args[2], 10, 64)

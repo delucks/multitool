@@ -94,7 +94,7 @@ func SpellCorrectCommand(args []string, _ io.Reader) error {
 	 */
 	// Make sure we have one cli argument, the name to attempt correction on
 	if len(args) < 2 {
-		return fmt.Errorf("Usage: %s <token to spell correct>\n", args[0])
+		return fmt.Errorf("Usage: %s <token to spell correct>", args[0])
 	}
 	correctionTarget := args[1]
 	// Load all possibilities

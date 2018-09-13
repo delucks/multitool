@@ -12,12 +12,8 @@ It's based on the [leatherman](https://github.com/frioux/leatherman) project by 
 ## From dotfiles
 - backlight
 - fileset ("settool")
-x log()
-- hex() and int()
-- Emoji generator script (characters with human names)
 
 ## From scripts
-- colors.sh
 - digdug.sh
   May as well make a generic "make me some ascii art"
 - ObliqueStrategies.sh
@@ -29,13 +25,3 @@ x log()
 - iploc()
 - histogram()
 - lenny
-
-
-Also can I kill the delucks/scripts repo? Things I still use:
-- ObliqueStrategies.sh
-x figletsample.sh
-- parse-last.py
-- fetch_beets_album.py
-Occasionally:
-- vc-check.sh
-- colors.sh

@@ -36,6 +36,7 @@ func main() {
 	Entrypoints = map[string]Tool{
 		"basejump":   Tool{"Convert an integer between base representations", ConvertBase},
 		"colors":     Tool{"View the current terminal colorscheme", FancyPrint},
+		"emojis":     Tool{"Get all emojis with aliases", GetAllEmojis},
 		"log":        Tool{"Simple logger for use in shell scripts", ShellLogger},
 		"suggest-fc": Tool{"Spell-correct an incorrectly typed executable", SpellCorrectCommand},
 		"help":       Tool{"Display this help output", Help},

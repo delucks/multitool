@@ -40,6 +40,7 @@ func main() {
 		"log":        Tool{"Simple logger for use in shell scripts", ShellLogger},
 		"suggest-fc": Tool{"Spell-correct an incorrectly typed executable", SpellCorrectCommand},
 		"help":       Tool{"Display this help output", Help},
+		"setup":      Tool{"Symlink all individual tools", SymlinkAll},
 	}
 
 	which := filepath.Base(os.Args[0])

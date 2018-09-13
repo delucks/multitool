@@ -7,8 +7,6 @@ import (
 	"time"
 )
 
-var useANSIColor bool
-
 // Outputs messages with ISO8601 timestamps and terminal colors for severity levels
 func ShellLogger(args []string, stdin io.Reader) error {
 	var severity, message string
@@ -33,13 +31,6 @@ func ShellLogger(args []string, stdin io.Reader) error {
 		"ok":        Green,
 		"info":      Green,
 		"debug":     Blue,
-	}
-	// Should we use ANSI terminal sequences to get colors?
-	switch os.Getenv("COLOR_ENABLED") {
-	case "false", "no", "FALSE", "f", "n":
-		useANSIColor = false
-	default:
-		useANSIColor = true
 	}
 	now := time.Now().Format(time.RFC3339) + "\t"
 	if useANSIColor {

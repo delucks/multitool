@@ -13,6 +13,7 @@ type Tool struct {
 }
 
 var Entrypoints map[string]Tool
+var useANSIColor bool
 
 func Help([]string, io.Reader) error {
 	fmt.Fprintf(os.Stderr, "multitool: https://github.com/delucks/multitool\n\n")
@@ -25,8 +26,16 @@ func Help([]string, io.Reader) error {
 }
 
 func main() {
+	// Should we use ANSI terminal sequences to get colors?
+	switch os.Getenv("COLOR_ENABLED") {
+	case "false", "no", "FALSE", "f", "n":
+		useANSIColor = false
+	default:
+		useANSIColor = true
+	}
 	Entrypoints = map[string]Tool{
 		"basejump":   Tool{"Convert an integer between base representations", ConvertBase},
+		"colors":     Tool{"View the current terminal colorscheme", FancyPrint},
 		"log":        Tool{"Simple logger for use in shell scripts", ShellLogger},
 		"suggest-fc": Tool{"Spell-correct an incorrectly typed executable", SpellCorrectCommand},
 		"help":       Tool{"Display this help output", Help},
@@ -46,7 +55,11 @@ func main() {
 	}
 	err := fn.Entrypoint(args, os.Stdin)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s\n", err)
+		message := "%s\n"
+		if useANSIColor {
+			message = ColorWrap(message, Red)
+		}
+		fmt.Fprintf(os.Stderr, message, err)
 		os.Exit(1)
 	}
 }

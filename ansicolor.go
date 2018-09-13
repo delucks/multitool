@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"io"
+)
+
 // Used for logging messages & errors
 type ANSIColor int
 
@@ -40,4 +45,16 @@ func GetEscape(c ANSIColor) string {
 
 func ColorWrap(message string, color ANSIColor) string {
 	return GetEscape(color) + message + GetEscape(Reset)
+}
+
+// View the current terminal colorscheme
+func FancyPrint(_ []string, _ io.Reader) error {
+	chr := "⣿⣿⣿⣿"
+	for i := 0; i < 2; i++ {
+		for j := 30; j < 38; j++ {
+			fmt.Printf("\033[%d;%dm%s\033[0m", i, j, chr)
+		}
+		fmt.Printf("\n")
+	}
+	return nil
 }

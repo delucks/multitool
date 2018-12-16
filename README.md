@@ -1,5 +1,7 @@
 # multitool
 
+[![Build Status](https://travis-ci.org/delucks/multitool.svg?branch=master)](https://travis-ci.org/delucks/multitool)
+
 This is a project composed of many small tools executed under a single binary, like `busybox`. I'm creating it with the intention of implementing more command-line utilities in golang and moving some of my complex shell scripts into Go with more testing.
 
 ## Tools Available

@@ -12,3 +12,18 @@ install:
 
 script:
 - go test ./...
+
+before_deploy:
+  - make clean
+  - make release
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: VYN/lahifRTf3SGrdtj0JCvtpiqpZc7h2099IL5par650vJYyBar0mF14GKT3EeNN40Wk7axAGkr6+h6oAe3OVw2Pad91w24dPtOIGMITxA07iy+uJYbOjroab90xh7q+59HYb+Zwz/DILVYKrz137nMLVe6kO6EaZHOcj+UskrLNAs8e3+tTvGHcSpeA7mXk4nVa87anwiLe9JWlsCR7SJDc1oL9U8dXz7xqLi1Mv87cG2v6PM0dlMnG7CgO5oMGAK0skJ2sO6fD2oaGoJ0TTZhq0D4fC2pYAtIHIHbD7In7sZHexmFjU2r4lBPfdpc3qqyT8kz01upCjQIXIZZ5kxr9Ms69p7LNu4Gud0yq4BvRBO+/Y/DfpDZn+nL+s2A3LmF7Fv5n/sHFmO2efHDIBzKshH01Vdu+L2HEOv0K9mypaGsMUXKA9YeG/4zXMDFv0MMk8LQnxUY7XlnQ3ST4mJC4Gs1/kAc+GZgz3yfvIR7S8qqjBBdPq5IJuyqLj/h4YEMruowCncwdz49348Pm8nj7XyW7uGYHUNgNBQo8Ra2OifwAOuFkgPqjNf77faCzn8i1mZU0uGLyl+3gj/qTuU4wsef0U60dwqPh3XrSk4cJOROaFABYydWYTto4LQvnHDGCuF3wB6ZVuhP+XHgp5AnVwd/0YsvDEq0LXvxEzU=
+  file_glob: true
+  file: build/*
+  on:
+    tags: true
+    repo: delucks/multitool
+    go: tip

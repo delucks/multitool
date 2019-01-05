@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/delucks/multitool.svg?branch=master)](https://travis-ci.org/delucks/multitool)
 
-This is a project composed of many small tools executed under a single binary, like `busybox`. I'm creating it with the intention of implementing more command-line utilities in golang and moving some of my complex shell scripts into Go with more testing.
+This is a project composed of many small tools executed under a single binary, like `busybox`. It holds a bunch of small programs that perform one task, all written in golang. It's a target for porting complex shell scripts into go, enabling more testing and speed. This was inspired during a conversation about the [leatherman](https://github.com/frioux/leatherman) project by fREW, which operates in a similar way.
 
 ## Tools Available
 
@@ -13,20 +13,14 @@ This is a project composed of many small tools executed under a single binary, l
 | `emojis` | Generate a TSV of all emojis with :alias: names |
 | `log` | A simple shell logging utility that outputs ISO8601 timestamps and terminal colors |
 | `suggest-fc` | A simple spellchecking app to suggest a command you may have mistyped |
+| `jsontoyaml` | Convert a JSON structure to the equivalent YAML |
+| `yamltojson` | Convert a YAML structure to the equivalent JSON (assuming you're using compatible features) |
 
-This project is based on the [leatherman](https://github.com/frioux/leatherman) project by fREW- thanks for the inspiration!
-
-# TODO
-
-### New Tools
-- yamltojson
-- jsontoyaml
+## TODO
 
 ### From dotfiles
-- backlight
 - fileset ("settool")
 - iploc()
-- histogram()
 
 ### From scripts
 - digdug.sh

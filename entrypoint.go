@@ -41,6 +41,8 @@ func main() {
 		"suggest-fc": Tool{"Spell-correct an incorrectly typed executable", SpellCorrectCommand},
 		"help":       Tool{"Display this help output", Help},
 		"setup":      Tool{"Symlink all individual tools", SymlinkAll},
+		"yamltojson": Tool{"Convert YAML to JSON", YamlToJson},
+		"jsontoyaml": Tool{"Convert JSON to YAML", JsonToYaml},
 	}
 
 	which := filepath.Base(os.Args[0])

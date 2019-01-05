@@ -2,3 +2,4 @@
 *.swo
 multitool
 build/
+vendor/

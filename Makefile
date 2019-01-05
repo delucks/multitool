@@ -16,7 +16,7 @@ zip = cd build && zip $(appname)-$(tag)_$(1)_$(2).zip $(appname)$(3) && rm $(app
 
 all: build
 
-.PHONY : clean deps build linux release windows_build darwin_build linux_build bsd_build clean
+.PHONY : clean deps build linux release windows_build darwin_build linux_build bsd_build clean mod
 
 clean:
 	go clean -i $(GO_FLAGS) $(SOURCE_DIR)
@@ -25,6 +25,10 @@ clean:
 
 deps:
 	go get $(GO_FLAGS) -d $(SOURCE_DIR)
+
+mod:
+	go get ./...
+	go mod vendor
 
 build: deps
 	go build $(GO_FLAGS) -o $(BINARY) $(SOURCE_DIR)

@@ -1,6 +1,8 @@
 package main
 
-func ExampleHexConvertBase() {
+import "testing"
+
+func TestConvertBase(_ *testing.T) {
 	_ = ConvertBase([]string{"basejump", "0xfeedface", "10"}, nil)
 	_ = ConvertBase([]string{"basejump", "0xdeadbeef", "2"}, nil)
 	_ = ConvertBase([]string{"basejump", "0xfeed", "8"}, nil)
@@ -10,9 +12,6 @@ func ExampleHexConvertBase() {
 	// 11011110101011011011111011101111
 	// 177355
 	// feed
-}
-
-func ExampleOctalConvertBase() {
 	_ = ConvertBase([]string{"basejump", "0o7431", "10"}, nil)
 	_ = ConvertBase([]string{"basejump", "0o7431", "16"}, nil)
 	_ = ConvertBase([]string{"basejump", "0o54307", "2"}, nil)
@@ -22,9 +21,6 @@ func ExampleOctalConvertBase() {
 	// f19
 	// 101100011000111
 	// 54307
-}
-
-func ExampleBinaryConvertBase() {
 	_ = ConvertBase([]string{"basejump", "0b11010001100001", "10"}, nil)
 	_ = ConvertBase([]string{"basejump", "0b11010001100001", "16"}, nil)
 	_ = ConvertBase([]string{"basejump", "0b1101", "2"}, nil)

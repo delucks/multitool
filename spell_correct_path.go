@@ -125,5 +125,5 @@ func SpellCorrectCommand(args []string, _ io.Reader) error {
 		}
 	}
 	// No match found in two distances, return an exit status of 1
-	return errors.New("")
+	return errors.New("Command not found")
 }

@@ -6,11 +6,29 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
+	"os/user"
+	"path/filepath"
+	"time"
 )
 
 // based on kyokomi/generateEmojiCodeMap... a little copying is better than a little dependency
 
-const gemojiDBJsonURL = "https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json"
+const (
+	gemojiDBJsonURL = "https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json"
+	localCacheFile  = ".cache/emoji.json"
+	// 30 days
+	cacheExpirationMsec = 1000 * 60 * 60 * 24 * 30
+)
+
+func relativeToHome(path string) (string, error) {
+	user, err := user.Current()
+	if err != nil {
+		return "", err
+	}
+	fullPath := filepath.Join(user.HomeDir, path)
+	return fullPath, nil
+}
 
 type gemojiEmoji struct {
 	Aliases     []string `json:"aliases"`
@@ -19,18 +37,52 @@ type gemojiEmoji struct {
 	Tags        []string `json:"tags"`
 }
 
-func generateJson() (map[string]string, error) {
+func downloadLocally() error {
+	absPath, err := relativeToHome(localCacheFile)
+	if err != nil {
+		return err
+	}
 	res, err := http.Get(gemojiDBJsonURL)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+	out, err := os.Create(absPath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+	_, err = io.Copy(out, res.Body)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func generateJson() (map[string]string, error) {
+	absPath, err := relativeToHome(localCacheFile)
 	if err != nil {
 		return nil, err
 	}
-	defer res.Body.Close()
-	emojiFile, err := ioutil.ReadAll(res.Body)
+	stat, err := os.Stat(absPath)
+	// If the file doesn't exist or is >30d old, redownload it
+	if os.IsNotExist(err) || time.Since(stat.ModTime()) > cacheExpirationMsec {
+		err = downloadLocally()
+		if err != nil {
+			return nil, err
+		}
+	}
+	emojiFile, err := os.Open(absPath)
+	defer emojiFile.Close()
+	if err != nil {
+		return nil, err
+	}
+	contents, err := ioutil.ReadAll(emojiFile)
 	if err != nil {
 		return nil, err
 	}
 	var gs []gemojiEmoji
-	if err := json.Unmarshal(emojiFile, &gs); err != nil {
+	if err := json.Unmarshal(contents, &gs); err != nil {
 		return nil, err
 	}
 	emojiCodeMap := make(map[string]string)

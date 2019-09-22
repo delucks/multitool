@@ -43,6 +43,7 @@ func main() {
 		"setup":      Tool{"Symlink all individual tools", SymlinkAll},
 		"yamltojson": Tool{"Convert YAML to JSON", YamlToJson},
 		"jsontoyaml": Tool{"Convert JSON to YAML", JsonToYaml},
+		"servedir":   Tool{"Serve the given dir on HTTP 8080", ServeDirViaHTTP},
 	}
 
 	which := filepath.Base(os.Args[0])

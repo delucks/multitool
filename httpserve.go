@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -19,6 +20,7 @@ func RequestLogger(targetMux http.Handler) http.Handler {
 		// log request by who(IP address)
 		requesterIP := r.RemoteAddr
 
+		// TODO: common/combined log format
 		log.Printf(
 			"%s\t\t%s\t\t%s\t\t%v",
 			r.Method,
@@ -74,7 +76,15 @@ func ServeDirViaHTTP(args []string, _ io.Reader) error {
 	if len(args) < 2 {
 		directory = "."
 	} else {
-		directory = args[1]
+		ok, err := pathIsDir(args[1])
+		if err != nil {
+			return err
+		}
+		if ok {
+			directory = args[1]
+		} else {
+			return errors.New(args[1] + " is not a valid directory")
+		}
 	}
 	fs := filteredFileSystem{http.Dir(directory)}
 	fileHandler := http.FileServer(fs)

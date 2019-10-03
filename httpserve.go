@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -17,16 +16,24 @@ func RequestLogger(targetMux http.Handler) http.Handler {
 
 		targetMux.ServeHTTP(w, r)
 
-		// log request by who(IP address)
-		requesterIP := r.RemoteAddr
+		referer := r.Referer()
+		if referer == "" {
+			referer = "-"
+		}
 
-		// TODO: common/combined log format
-		log.Printf(
-			"%s\t\t%s\t\t%s\t\t%v",
+		// Apache combined log format, but since we don't have access to content-length it's the request timing instead
+		fmt.Printf(
+			"%s - %s [%s] \"%s %s %s\" %d %v %s \"%s\"\n",
+			r.RemoteAddr,
+			"-", // user assumed to be empty because we don't have authentication
+			start.Format("02/Jan/2006:15:04:05 -0700"),
 			r.Method,
 			r.RequestURI,
-			requesterIP,
+			r.Proto,
+			200, // we don't have access to the Response, so we assume everything is a 200
 			time.Since(start),
+			referer,
+			r.UserAgent(),
 		)
 	})
 }
@@ -89,6 +96,6 @@ func ServeDirViaHTTP(args []string, _ io.Reader) error {
 	fs := filteredFileSystem{http.Dir(directory)}
 	fileHandler := http.FileServer(fs)
 	http.Handle("/", fileHandler)
-	fmt.Printf("Serving %s via port 8080\n", directory)
+	fmt.Fprintf(os.Stderr, "Serving %s via port 8080. Combined log format to stdout:\n", directory)
 	return http.ListenAndServe(":8080", RequestLogger(fileHandler))
 }

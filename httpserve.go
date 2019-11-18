@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -80,9 +81,11 @@ func (fs filteredFileSystem) Open(name string) (http.File, error) {
 
 func ServeDirViaHTTP(args []string, _ io.Reader) error {
 	var directory string
-	if len(args) < 2 {
+	port := "8080"
+	switch len(args) {
+	default:
 		directory = "."
-	} else {
+	case 2:
 		ok, err := pathIsDir(args[1])
 		if err != nil {
 			return err
@@ -92,10 +95,25 @@ func ServeDirViaHTTP(args []string, _ io.Reader) error {
 		} else {
 			return errors.New(args[1] + " is not a valid directory")
 		}
+	case 3:
+		ok, err := pathIsDir(args[1])
+		if err != nil {
+			return err
+		}
+		if ok {
+			directory = args[1]
+		} else {
+			return errors.New(args[1] + " is not a valid directory")
+		}
+		_, err = strconv.Atoi(args[2])
+		if err != nil {
+			return err
+		}
+		port = args[2]
 	}
 	fs := filteredFileSystem{http.Dir(directory)}
 	fileHandler := http.FileServer(fs)
 	http.Handle("/", fileHandler)
-	fmt.Fprintf(os.Stderr, "Serving %s via port 8080. Combined log format to stdout:\n", directory)
-	return http.ListenAndServe(":8080", RequestLogger(fileHandler))
+	fmt.Fprintf(os.Stderr, "Serving %s via port %s. Combined log format to stdout:\n", directory, port)
+	return http.ListenAndServe(":"+port, RequestLogger(fileHandler))
 }

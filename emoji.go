@@ -17,8 +17,6 @@ import (
 const (
 	gemojiDBJsonURL = "https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json"
 	localCacheFile  = ".cache/emoji.json"
-	// 30 days
-	cacheExpirationMsec = 1000 * 60 * 60 * 24 * 30
 )
 
 func relativeToHome(path string) (string, error) {
@@ -60,13 +58,17 @@ func downloadLocally() error {
 }
 
 func generateJson() (map[string]string, error) {
+	expiration, err := time.ParseDuration("720h")
+	if err != nil {
+		return nil, err
+	}
 	absPath, err := relativeToHome(localCacheFile)
 	if err != nil {
 		return nil, err
 	}
 	stat, err := os.Stat(absPath)
 	// If the file doesn't exist or is >30d old, redownload it
-	if os.IsNotExist(err) || time.Since(stat.ModTime()) > cacheExpirationMsec {
+	if os.IsNotExist(err) || time.Since(stat.ModTime()) > expiration {
 		err = downloadLocally()
 		if err != nil {
 			return nil, err

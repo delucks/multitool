@@ -114,6 +114,6 @@ func ServeDirViaHTTP(args []string, _ io.Reader) error {
 	fs := filteredFileSystem{http.Dir(directory)}
 	fileHandler := http.FileServer(fs)
 	http.Handle("/", fileHandler)
-	fmt.Fprintf(os.Stderr, "Serving %s via port %s. Combined log format to stdout:\n", directory, port)
+	fmt.Fprintf(os.Stderr, "Serving %s on http://localhost:%s. Combined log format to stdout:\n", directory, port)
 	return http.ListenAndServe(":"+port, RequestLogger(fileHandler))
 }
